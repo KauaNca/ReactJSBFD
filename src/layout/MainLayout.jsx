@@ -44,7 +44,7 @@ function MainLayout() {
   ];
 
   return (
-    <Layout style={{ minHeight: "100vh", background: "#f7f7f7" }}>
+    <Layout style={{ minHeight: "100vh", background: "#f7f7f7", minWidth: "100vw" }}>
       {/* ===== Cabeçalho ===== */}
       <Header
         style={{
@@ -58,6 +58,7 @@ function MainLayout() {
           alignItems: "center",
           justifyContent: "space-between",
           paddingInline: 16,
+          marginBottom: "5rem"
         }}
       >
         {/* Logo / Título */}
