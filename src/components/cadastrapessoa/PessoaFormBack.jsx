@@ -67,9 +67,11 @@ export default function PessoaForm() {
           email: pessoa.email,
           endereco: pessoa.endereco || {},
           telefones: pessoa.telefones || [],
+
         };
 
         if (tipoParam === "PF") {
+          valores.dataNascimento = pessoa.data ? dayjs(pessoa.data) : null
           valores.cpf = pessoa.cpf;
           valores.titulo = pessoa.titulo || { numero: "", zona: "", secao: "" };
         } else {
@@ -79,11 +81,14 @@ export default function PessoaForm() {
             numero: ieObj.numero || "",
             estado: ieObj.estado || "",
             dataRegistro:
-              ieObj.dataRegistro && ieObj.dataRegistro !== ""
+              ieObj.dataRegistro
                 ? dayjs(ieObj.dataRegistro)
-                : null,
+                : null
+
           };
+
         }
+        console.log(valores);
 
         form.setFieldsValue(valores);
         setLoading(false); // finaliza SPIN
@@ -94,16 +99,16 @@ export default function PessoaForm() {
   }, [id, tipoParam]);
 
   // ============================================================
-//  LIMPAR FORMULÁRIO AO ENTRAR EM /cadastrar
-// ============================================================
-useEffect(() => {
-  if (!id) {
-    // Se não tem ID, estamos em modo cadastro
-    setEditando(false);
-    setTipo("PF"); // volta ao padrão
-    form.resetFields();
-  }
-}, [id]);
+  //  LIMPAR FORMULÁRIO AO ENTRAR EM /cadastrar
+  // ============================================================
+  useEffect(() => {
+    if (!id) {
+      // Se não tem ID, estamos em modo cadastro
+      setEditando(false);
+      setTipo("PF"); // volta ao padrão
+      form.resetFields();
+    }
+  }, [id]);
 
 
   // ============================================================
@@ -144,7 +149,9 @@ useEffect(() => {
         pf.setNome(values.nome);
         pf.setEmail(values.email);
         pf.setCPF(values.cpf);
-        pf.setEndereco(end);
+        pf.setEndereco(end)
+        pf.setData(values.dataNascimento);
+        // -------------------------
 
         if (values.titulo) {
           const t = new Titulo();
@@ -175,15 +182,10 @@ useEffect(() => {
           const ie = new IE();
           ie.setNumero(values.ie.numero);
           ie.setEstado(values.ie.estado);
-
-          const dr = values.ie.dataRegistro;
-          const dataRegistro =
-            dr && typeof dr === "object" && typeof dr.format === "function"
-              ? dr.format("YYYY-MM-DD")
-              : dr || "";
-
-          ie.setDataRegistro(dataRegistro);
+          ie.setDataRegistro(values.ie.dataRegistro);
+          pj.setData(values.ie.dataRegistro)
           pj.setIE(ie);
+
         }
 
         if (values.telefones?.length > 0) {

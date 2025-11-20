@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import { Card, Descriptions, Button, Spin } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import PFDAO from "../../objetos/dao/PFDAOBackEnd.mjs";
@@ -67,11 +68,12 @@ export default function VisualizaPessoa() {
         <Descriptions bordered column={1}>
           <Descriptions.Item label="Nome">{pessoa.nome}</Descriptions.Item>
           <Descriptions.Item label="E-mail">{pessoa.email}</Descriptions.Item>
+          <Descriptions.Item label="Data">{dayjs(pessoa.data).format('DD/MM/YYYY')}</Descriptions.Item>
 
           {tipo === "PF" ? (
             <Descriptions.Item label="CPF">{pessoa.cpf}</Descriptions.Item>
           ) : (
-            <Descriptions.Item label="CNPJ">{pessoa.cnpj}</Descriptions.Item>
+            <Descriptions.Item label="CNPJ">{(pessoa.cnpj)}</Descriptions.Item>
           )}
 
           <Descriptions.Item label="Endereço">
@@ -98,7 +100,7 @@ export default function VisualizaPessoa() {
           ) : (
             <Descriptions.Item label="Inscrição Estadual">
               {pessoa.ie?.numero
-                ? `Nº ${pessoa.ie.numero} - ${pessoa.ie.estado} (${pessoa.ie.dataRegistro})`
+                ? `Nº ${pessoa.ie.numero} - ${pessoa.ie.estado} (${dayjs(pessoa.ie.dataRegistro).format('DD/MM/YYYY')})`
                 : "Não informado"}
             </Descriptions.Item>
           )}

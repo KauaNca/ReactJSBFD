@@ -1,116 +1,84 @@
-# 🧠 ReactJSBFD  
-> Repositório criado com o objetivo de **aprender e praticar ReactJS** na construção de componentes reutilizáveis e interfaces modernas.  
-> Desenvolvido com **Vite** para um ambiente leve e rápido.
+# 📘 Atualizações do Projeto — Registro de Datas e Integração com Backend
+
+Este documento descreve todas as alterações realizadas no projeto relacionadas ao uso de datas, integração com backend e melhorias gerais no fluxo de cadastro, edição e visualização de pessoas (PF e PJ).
 
 ---
 
-## 🎯 Objetivo do projeto  
-Este projeto foi desenvolvido como um laboratório de estudos em **ReactJS**, com foco em:  
-- Compreender a estrutura e o fluxo de uma aplicação React moderna.  
-- Criar e estilizar **componentes reutilizáveis** (botões, inputs, labels, etc).  
-- Explorar o uso de **CSS modularizado** e **Ant Design**.  
-- Comparar diferentes abordagens de construção de UI dentro do mesmo projeto.  
-- Consolidar o aprendizado de conceitos fundamentais como **props**, **estado**, **componentização** e **renderização declarativa**.
+## ✅ 1. `App.jsx` — Configuração do calendário em Português (PT-BR)
+
+- Adicionado o **ConfigProvider** do Ant Design configurado com `pt_BR`.
+- Todos os componentes de data passam a exibir:
+  - Meses em português  
+  - Dias da semana em português  
+  - Formatação brasileira  
+- Garantia de consistência visual e eliminação de problemas de exibição.
 
 ---
 
-## 🧩 Tecnologias e ferramentas  
-| Categoria | Tecnologias |
-|------------|--------------|
-| Framework | [ReactJS](https://react.dev/) |
-| Bundler / Dev Server | [Vite](https://vitejs.dev/) |
-| Estilos | CSS puro e [Ant Design](https://ant.design/) |
-| Qualidade de código | ESLint |
-| Gerenciador de pacotes | npm |
+## ✅ 2. `PessoaFormBack` — Ajustes no envio de dados e datas
+
+### ✔ Transformações de datas removidas
+- O problema de fuso horário já não ocorria mais, então a correção deixou de ser necessária.
+
+### ✔ Envio de objetos completos
+- Agora o formulário envia as classes **PF**, **PJ**, **IE**, **Endereco** e **Telefone** completas para o backend.
+
+### ✔ Métodos de data aplicados corretamente
+- No carregamento, usa-se `dayjs(pessoa.data)`.
+- No envio, é mandado um objeto sem manipulação extra.
+- Isso garante:
+  - Consistência  
+  - Previsibilidade  
+  - Zero alteração inesperada do dia  
 
 ---
 
-## 📁 Estrutura do projeto  
-```
-/
-├─ public/                  # Arquivos públicos e estáticos
-├─ src/
-│  ├─ components/
-│  │   ├─ CSS/              # Componentes estilizados manualmente com CSS
-│  │   └─ antd/             # Versões dos componentes usando Ant Design
-│  ├─ App.jsx               # Componente principal da aplicação
-│  ├─ main.jsx              # Ponto de entrada
-│  └─ index.css             # Estilos globais
-├─ eslint.config.js         # Regras do ESLint
-├─ vite.config.js           # Configuração do Vite
-└─ package.json
-```
+## ✅ 3. `VisualizarPessoaBack` — Exibição do campo “Data”
+
+- O componente agora mostra o campo **Data** corretamente.
+- Sem transformações.
+- Compatível para PF e PJ.
 
 ---
 
-## 🚀 Como executar o projeto
+## ✅ 4. `PFDAOBackEnd` e `PJDAOBackEnd` — Métodos herdados de Pessoa
 
-### 🧱 Pré-requisitos  
-- Node.js (>= 14)  
-- npm (ou yarn)
+- Ambos os DAOs agora incluem e utilizam os métodos herdados da classe base **Pessoa**.
+- Métodos incorporados:
+  - `getData()`
+  - `setData()`
+  - Outros utilitários herdados
 
-### ⚙️ Instalação  
-```bash
-git clone https://github.com/vaguettibfd/ReactJSBFD.git
-cd ReactJSBFD
-npm install
-```
-
-### ▶️ Executar em modo de desenvolvimento  
-```bash
-npm run dev
-```
-O Vite iniciará um servidor local (geralmente em `http://localhost:5173`).
+### Benefícios
+- Menos código duplicado.
+- DAOs mais coerentes com a estrutura orientada a objetos.
+- Persistência de dados mais robusta.
 
 ---
 
-## 🧠 O que você vai aprender aqui  
+## ✅ 5. Classe `Pessoa` — Novos métodos de Data
 
-✅ Estrutura básica de um projeto React  
-✅ Criação de componentes funcionais  
-✅ Comunicação entre componentes via **props**  
-✅ Uso de **CSS modularizado** e comparação com bibliotecas de UI  
-✅ Integração de bibliotecas externas (Ant Design)  
-✅ Diferenças entre componentes customizados e componentes prontos  
+A classe base **Pessoa** agora possui:
 
----
+- `getData()`
+- `setData(data)`
 
-## 🧩 Exemplos de componentes  
-
-- **Button** — criado em duas versões:  
-  - `src/components/CSS/Button.jsx` → feito manualmente com CSS  
-  - `src/components/antd/Button.jsx` → usando Ant Design  
-
-- **InputText**, **InputPassword**, **Label**, **LabelTitle** — seguem o mesmo padrão, facilitando comparação e reuso.
+### Resultado
+- A lógica de datas passou a ser centralizada.
+- PF e PJ apenas reaproveitam o comportamento padrão.
 
 ---
 
-## 💡 Ideias de extensão do aprendizado  
-- Migrar o projeto para **TypeScript**.  
-- Adicionar **React Router** para navegar entre páginas.  
-- Criar **testes unitários** com Jest e React Testing Library.  
-- Usar **Context API** ou **Redux** para gerenciar estado global.  
-- Implementar um pequeno **formulário de login funcional** com validações.
+## 🎯 Conclusão
+
+Com essas mudanças:
+
+- Todas as datas fluem corretamente entre frontend → backend → JSON.
+- O frontend não altera mais datas desnecessariamente.
+- O backend é responsável pela consistência dos dados.
+- A visualização exibe informações corretas.
+- O código ficou mais limpo, organizado e reutilizável.
 
 ---
 
-## 🤝 Contribuindo  
-Contribuições são bem-vindas!  
-Este é um projeto de aprendizado aberto — sinta-se à vontade para sugerir melhorias, correções ou novos componentes.  
-
-1. Faça um fork do repositório.  
-2. Crie uma branch para sua modificação:  
-   ```bash
-   git checkout -b feature/nova-funcionalidade
-   ```  
-3. Faça commit das alterações e envie:  
-   ```bash
-   git push origin feature/nova-funcionalidade
-   ```  
-4. Abra um Pull Request.
-
----
-
-## 📜 Licença  
-Este projeto está sob a licença [MIT](LICENSE).
-
+Se quiser, posso gerar um README completo para o projeto inteiro, incluindo instruções de instalação, execução, dependências e exemplos.

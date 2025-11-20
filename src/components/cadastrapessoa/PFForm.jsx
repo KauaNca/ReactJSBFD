@@ -13,7 +13,7 @@ function PFForm(){
     </Form.Item> */}
 
         <Form.Item label="Data de Nascimento" name="dataNascimento">
-          <DatePicker format="DD/MM/YYYY" style={{ width: "100%" } } placeholder="Selecione data de nascimento" />
+          <DatePicker format="YYYY-MM-DD" style={{ width: "100%" } } placeholder="Selecione data de nascimento" />
         </Form.Item>
 
         <Form.Item label="Título Eleitoral - Número" name={["titulo", "numero"]}>

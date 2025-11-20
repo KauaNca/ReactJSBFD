@@ -7,18 +7,25 @@
 //import PessoaForm from "./components/cadastrapessoa/PessoaFormOO.jsx"
 
 // necessário apenas a partir da utilização de rotas para outras telas
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 //import AppRoutes from "./routes/AppRoutes.jsx";
-//import AppRoutes from "./routes/AppRoutesV2.jsx";
-import AppRoutes from "./routes/AppRoutesBack.jsx";
+import AppRoutes from './routes/AppRoutesBack.jsx';
+//Importações para o calendário
+import ptBR from 'antd/es/locale/pt_BR';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+dayjs.locale('pt-br');
+//ConfigProvider - define padrões de componentes
+import { ConfigProvider } from 'antd';
 
 function App() {
-
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
-  )
+    <ConfigProvider locale={ptBR}>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </ConfigProvider>
+  );
 }
 
-export default App
+export default App;

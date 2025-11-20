@@ -67,6 +67,7 @@ export default class PFDAO {
   async atualizar(id, novoPF) {
     try {
       const obj = this.toPlain(novoPF);
+      console.log(obj)
       delete obj.id;
 
       const resp = await fetch(`${this.baseUrl}/${id}`, {
@@ -107,6 +108,7 @@ export default class PFDAO {
       nome: pf.nome,
       email: pf.email,
       cpf: pf.cpf,
+      data: pf.data || null,
       endereco: pf.endereco
         ? {
             cep: pf.endereco.cep,
@@ -142,6 +144,7 @@ export default class PFDAO {
       nome: pf.getNome?.(),
       email: pf.getEmail?.(),
       cpf: pf.getCPF?.(),
+      data: pf.getData(),
       endereco: end
         ? {
             cep: end.getCep?.(),
@@ -162,7 +165,7 @@ export default class PFDAO {
             zona: titulo.getZona?.(),
             secao: titulo.getSecao?.(),
           }
-        : {},
+        : {}
     };
   }
 

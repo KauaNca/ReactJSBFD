@@ -1,20 +1,23 @@
 import PJ from "../pessoas/PJ.mjs";
 
 export default class PJDAO {
-    constructor(id = null) {
-        this.baseUrl = "https://backend-pessoas.vercel.app/pj";
-        this.cache = [];
-      
-        if (id) {
-          this.cache = [];
-          this.buscarPorId(id).then((pessoa) => {
-            if (pessoa) this.cache = [pessoa];
-          });
-        } else {
-          this.carregarLista();
-        }
-      }
-      
+  constructor(id = null) {
+    this.baseUrl = "https://backend-pessoas.vercel.app/pj";
+    this.cache = [];
+
+    if (id) {
+      this.cache = [];
+      this.buscarPorId(id).then((pessoa) => {
+        if (pessoa) this.cache = [pessoa];
+      });
+    } else {
+      this.carregarLista();
+    }
+  }
+
+  // ============================================================
+  // LISTA COMPLETA (BACKEND → CACHE)
+  // ============================================================
   async carregarLista() {
     try {
       const resp = await fetch(this.baseUrl);
@@ -35,6 +38,9 @@ export default class PJDAO {
     return this.cache;
   }
 
+  // ============================================================
+  // SALVAR (POST)
+  // ============================================================
   async salvar(pj) {
     try {
       const obj = this.toPlain(pj);
@@ -50,6 +56,7 @@ export default class PJDAO {
       const data = await resp.json();
       const novo = this.mapPJ(data);
       this.cache.push(novo);
+
       return novo;
     } catch (e) {
       console.error("Erro ao salvar PJ:", e);
@@ -57,6 +64,9 @@ export default class PJDAO {
     }
   }
 
+  // ============================================================
+  // ATUALIZAR (PUT)
+  // ============================================================
   async atualizar(id, novoPJ) {
     try {
       const obj = this.toPlain(novoPJ);
@@ -67,6 +77,7 @@ export default class PJDAO {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(obj),
       });
+
       if (!resp.ok) throw new Error("Erro ao atualizar PJ");
 
       const data = await resp.json();
@@ -83,22 +94,30 @@ export default class PJDAO {
     }
   }
 
+  // ============================================================
+  // EXCLUIR (DELETE)
+  // ============================================================
   async excluir(id) {
     try {
       const resp = await fetch(`${this.baseUrl}/${id}`, { method: "DELETE" });
       if (!resp.ok) throw new Error("Erro ao excluir PJ");
+
       this.cache = this.cache.filter((p) => p.id !== id);
     } catch (e) {
       console.error("Erro ao excluir PJ:", e);
     }
   }
 
+  // ============================================================
+  // MAPEAR (BACKEND → FRONT)
+  // ============================================================
   mapPJ(pj) {
     return {
       id: pj._id,
       nome: pj.nome,
       email: pj.email,
       cnpj: pj.cnpj,
+      data: pj.data, // se tiver
       endereco: pj.endereco
         ? {
             cep: pj.endereco.cep,
@@ -123,8 +142,12 @@ export default class PJDAO {
     };
   }
 
+  // ============================================================
+  // CONVERTE CLASSE → JSON (FRONT → BACKEND)
+  // ============================================================
   toPlain(pj) {
     if (!pj) return {};
+
     const end = pj.getEndereco?.();
     const ie = pj.getIE?.();
     const telefones = pj.getTelefones?.() || [];
@@ -133,6 +156,7 @@ export default class PJDAO {
       nome: pj.getNome?.(),
       email: pj.getEmail?.(),
       cnpj: pj.getCNPJ?.(),
+      data: pj.getData?.(),
       endereco: end
         ? {
             cep: end.getCep?.(),
@@ -151,22 +175,26 @@ export default class PJDAO {
         ? {
             numero: ie.getNumero?.(),
             estado: ie.getEstado?.(),
-            dataRegistro: ie.getDataRegistro?.(),
+            dataRegistro: ie.getDataRegistro?.(), // sempre YYYY-MM-DD
           }
         : {},
     };
   }
 
+  // ============================================================
+  // BUSCAR POR ID (GET)
+  // ============================================================
   async buscarPorId(id) {
     const existente = this.cache.find((p) => p.id === id);
     if (existente) return existente;
-  
+
     try {
       const resp = await fetch(`${this.baseUrl}/${id}`);
       if (!resp.ok) throw new Error("Erro ao buscar PJ por ID");
+
       const data = await resp.json();
       const pessoa = this.mapPJ(data);
-  
+
       this.cache.push(pessoa);
       return pessoa;
     } catch (e) {
