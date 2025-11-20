@@ -80,5 +80,3 @@ Com essas mudanças:
 - O código ficou mais limpo, organizado e reutilizável.
 
 ---
-
-Se quiser, posso gerar um README completo para o projeto inteiro, incluindo instruções de instalação, execução, dependências e exemplos.
